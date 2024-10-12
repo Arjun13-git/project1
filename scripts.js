@@ -1,5 +1,5 @@
 // Array to hold items in the cart
-let cart = JSON.parse(localStorage.getItem('cart')) || [];
+let cart = [];
 
 // Function to add item to cart
 function addToCart(itemName, itemPrice) {
@@ -12,21 +12,21 @@ function addToCart(itemName, itemPrice) {
     // Add item to cart array
     cart.push(cartItem);
     
-    // Store cart in local storage
-    localStorage.setItem('cart', JSON.stringify(cart));
-    
     // Show alert to the user
     alert(`${itemName} has been added to your cart. Total items: ${cart.length}`);
-
-    // Update cart count display
-    updateCartCount();
+    
+    // Redirect to cart page (optional)
+    // window.location.href = "cart.html"; // Uncomment to redirect
 }
 
-// Function to update cart count display
-function updateCartCount() {
-    const cartCountElement = document.getElementById('cart-count');
-    cartCountElement.textContent = cart.length; // Update the displayed cart count
+// Function to calculate total price
+function calculateTotal() {
+    return cart.reduce((total, item) => total + item.price, 0);
 }
 
-// Call updateCartCount on page load
-document.addEventListener('DOMContentLoaded', updateCartCount);
+// Function to view cart (to be called from cart.html)
+function viewCart() {
+    const cartContent = cart.map(item => `${item.name}: $${item.price}`).join('\n');
+    const totalPrice = calculateTotal();
+    return `Cart Items:\n${cartContent}\n\nTotal: $${totalPrice}`;
+}
